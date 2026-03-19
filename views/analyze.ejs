@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SavageSite</title>
+</head>
+<body>
+    <form action="/analyze" method="POST">
+        <input type="text" name="url" placeholder="Enter website URL">
+        <button type="submit">Analyze</button>
+    </form>
+
+    <div class="container">
+        <h1><%= websiteName %></h1>
+        <p><%= metaDescription %></p>
+
+
+
+        <% if (imgs) { %>
+        <% imgs.forEach(imgSrc => { %>
+             <img src="<%= imgSrc %>" alt="">
+            <% }) %>
+        <% } %>
+
+    </div>
+
+    <script>
+    let getMessage = <%= isWrong %>; 
+
+    if(getMessage) { // Use the variable you just defined
+        alert("Do Not keep It Empty");
+    }
+    console.log(getMessage);
+    </script>
+
+</body>
+</html>
