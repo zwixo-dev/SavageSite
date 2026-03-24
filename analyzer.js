@@ -24,7 +24,8 @@ app.get("/analyze", (req,res) => {
         websiteName : "",
         metaDescription:"",
         titles:"",
-        imgs:""
+        imgs:"",
+        links:""
     });
 });
 
@@ -38,7 +39,8 @@ app.post("/analyze", async (req,res) => {
                 websiteName : "",
                 metaDescription:"",
                 titles:"",
-                imgs:""
+                imgs:"",
+                links:""
             });
         }
 
@@ -46,17 +48,23 @@ app.post("/analyze", async (req,res) => {
         const $ =  cheerio.load(response.data);
         
         const getWebsiteName = websiteName($);
+        console.log(getWebsiteName);
         const metaDescription = analyzeMetaDesciption($);
+        console.log(metaDescription);
         const getTitles = analyzeTheTitles($);
+        console.log(getTitles);
         const getImages = analyzeImages($);
+        console.log(getImages);
         const getLinks = analyzeLinks($);
+        console.log(getLinks);
 
         return res.render("analyze.ejs", { 
             isWrong: false,
             websiteName : getWebsiteName  || "WebSite Name Not Found !",
             metaDescription:metaDescription || " Meta Description Not Found !",
             titles: getTitles || "Titles Not Found !",
-            imgs: getImages || "Can Not access any image"
+            imgs: getImages || "Can Not access any image !",
+            links: getLinks ||"No Link or Route Found !"
         });
 
     } catch (error) {
@@ -74,7 +82,7 @@ function websiteName($){
     if(title){
         return title;
     }
-    return false;
+    return null;
 }
 
 function analyzeMetaDesciption($) {
@@ -84,7 +92,7 @@ function analyzeMetaDesciption($) {
         return getMetaDescription;
     } 
 
-    return false; 
+    return null; 
 }
 
 function analyzeTheTitles($){
@@ -95,7 +103,7 @@ function analyzeTheTitles($){
             }
     });
     if(titles.length === 0){
-        return false;
+        return null;
     }
 
     return titles;
@@ -112,7 +120,7 @@ function analyzeImages($){
         })
 
     if(images.length === 0){
-        return false;
+        return null;
     }
     return images;
 }
@@ -128,31 +136,12 @@ function analyzeLinks($){
     })
 
     if(links.length === 0){
-        return false;
+        return null;
     }
+
     return links;
 }
 
-// function analyzeFonts(){
-//     // const fonts = [];
-//     // const getFonts;
-// }
 
-// Gemini 
-console.log(process.env.GEMINI_API_KEY);
-
-const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-
-const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
-
-async function main() {
-  const response = await ai.models.generateContent({
-    model: 'gemini-2.5-flash',
-    contents: 'Why is the sky blue?',
-  });
-  console.log(response.text);
-}
-
-// main();
 
 export default app;
