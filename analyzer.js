@@ -25,7 +25,8 @@ app.get("/analyze", (req,res) => {
         metaDescription:"",
         titles:"",
         imgs:"",
-        links:""
+        links:"", 
+        fonts:""
     });
 });
 
@@ -40,7 +41,8 @@ app.post("/analyze", async (req,res) => {
                 metaDescription:"",
                 titles:"",
                 imgs:"",
-                links:""
+                links:"",
+                 fonts:""
             });
         }
 
@@ -57,6 +59,10 @@ app.post("/analyze", async (req,res) => {
         console.log(getImages);
         const getLinks = analyzeLinks($);
         console.log(getLinks);
+        const getfonts = fontFamily($);
+        console.log(getfonts);
+
+        main(getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts);
 
         return res.render("analyze.ejs", { 
             isWrong: false,
@@ -64,7 +70,8 @@ app.post("/analyze", async (req,res) => {
             metaDescription:metaDescription || " Meta Description Not Found !",
             titles: getTitles || "Titles Not Found !",
             imgs: getImages || "Can Not access any image !",
-            links: getLinks ||"No Link or Route Found !"
+            links: getLinks || "No Link or Route Found !",
+            fonts : getfonts || "No Link or file Fonts Found !",
         });
 
     } catch (error) {
@@ -142,6 +149,37 @@ function analyzeLinks($){
     return links;
 }
 
+
+function fontFamily($){
+    const fonts = [];
+    $('link[rel="stylesheet"]').each((index, element) => {
+        const href = $(element).attr("href");
+        if(href){
+            fonts.push(href);
+        }
+    });
+
+    if(fonts.length === 0){
+        return null;
+    }
+
+    return fonts;
+}
+
+
+console.log(process.env.GEMINI_API_KEY);
+
+const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+
+const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
+
+async function main(getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts) {
+  const response = await ai.models.generateContent({
+    model: 'gemini-2.5-flash',
+    contents: `what you see here : ${getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts}`,
+  });
+  console.log(response.text);
+}
 
 
 export default app;
