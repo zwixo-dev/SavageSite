@@ -3,24 +3,433 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Bungee&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
     <title>SavageSite</title>
+    <style>
+        :root {
+            --pink: #ff3f81;
+            --pink-dim: rgba(255, 63, 129, 0.15);
+            --bg: #0a0a0f;
+            --surface: rgba(255,255,255,0.03);
+            --border: rgba(255,255,255,0.07);
+            --text: #f0eef4;
+            --muted: rgba(240, 238, 244, 0.73);
+        }
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-color: var(--bg);
+            background-image:
+                radial-gradient(ellipse 60% 40% at 70% 10%, rgba(255,63,129,0.07) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 30% at 10% 80%, rgba(255,63,129,0.04) 0%, transparent 60%);
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* ── FORM ── */
+        form {
+            width: max-content;
+            max-width: 90vw;
+            padding: 14px 18px;
+            position: absolute;
+            transform: translate(-50%, 0);
+            left: 50%;
+            top: 18%;
+            display: flex;
+            align-items: center;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            backdrop-filter: blur(10px);
+            box-shadow: 0 0 40px rgba(255,63,129,0.06);
+        }
+
+        form input {
+            padding: 10px 20px;
+            width: 40rem;
+            max-width: 55vw;
+            margin: 0;
+            background: transparent;
+            border: none;
+            outline: none;
+            color: var(--text);
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+        }
+
+        form input::placeholder {
+            color: var(--muted);
+        }
+
+        form::before {
+            content: '';
+            display: block;
+            width: 1px;
+            height: 22px;
+            background: var(--border);
+            order: 1;
+            flex-shrink: 0;
+        }
+
+        form button {
+            order: 2;
+            padding: 10px 22px;
+            background: var(--pink);
+            color: #fff;
+            border: none;
+            border-radius: 2px;
+            font-family: 'Inter', sans-serif;
+            font-weight: 700;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background 0.2s ease, box-shadow 0.2s ease;
+            margin-left: 12px;
+        }
+
+        form button:hover {
+            background: #ff1f6a;
+            box-shadow: 0 0 20px rgba(255,63,129,0.45);
+        }
+
+        .message {
+            position: absolute;
+            right: 2%;
+            top: -16%;
+            font-family: 'Inter', sans-serif;
+            font-size: 1rem;
+            color: var(--pink);
+            letter-spacing: 0.08em;
+            opacity: 0.8;
+        }
+
+        /* ── CONTAINER ── */
+        .container {
+            max-width: 90%;
+            position: absolute;
+            transform: translate(-50%, 0);
+            left: 50%;
+            top: 28%;
+            padding-bottom: 4rem;
+        }
+
+        .container  h1 {
+            font-family: 'Bungee', cursive;
+            font-size: 2rem;
+            letter-spacing: 0.04em;
+            background: linear-gradient(135deg, #fff 0%, #ffb3cc 55%, var(--pink) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 0 16px rgba(255,63,129,0.3));
+            margin-bottom: 0.5rem;
+        }
+        .container .feature{
+            font-size: 1rem;
+            padding: 8px;
+            text-decoration: underline;
+            color: white;
+        }
+        .container  p {
+            font-family: 'Inter', sans-serif;
+            font-size: 0.9rem;
+            color: var(--muted);
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+            max-width: 70ch;
+        }
+        .container .titles{
+            max-height: 20rem;
+            overflow-x: scroll;
+            scrollbar-width: thin;
+            scrollbar-color: var(--pink) transparent;
+            }
+        /* ── IMAGES GRID ── */
+        .container .imgs{
+            width: 100%;
+            max-height: 40rem;
+            overflow-x: scroll;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+            gap: 1rem;
+            padding: 1.2rem;
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            margin: 1.5rem 0;
+            scrollbar-width: thin;
+            scrollbar-color: var(--pink) transparent;
+        }
+
+        .container .imgs::-webkit-scrollbar { height: 4px; }
+        .container .imgs::-webkit-scrollbar-thumb {
+            background: var(--pink);
+            border-radius: 2px;
+        }
+
+        .container .img {
+            width: 150px;
+            height: 150px;
+            overflow: hidden;
+            border-radius: 3px;
+            border: 1px solid var(--border);
+            transition: border-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .container .img:hover {
+            border-color: rgba(255,63,129,0.5);
+            transform: scale(1.03);
+            box-shadow: 0 4px 20px rgba(255,63,129,0.2);
+        }
+
+        .container .img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* ── LINKS ── */
+        .links{
+            width: 100%;
+            max-height: 20rem;
+            overflow-y: scroll;
+            scrollbar-width: thin;
+            scrollbar-color: var(--pink) transparent;
+        }
+        .container .links a {
+            display: inline-block;
+            font-family: 'Inter', sans-serif;
+            font-size: 0.75rem;
+            color: var(--pink);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            padding: 3px 8px;
+            margin: 3px 4px 3px 0;
+            border: 1px solid var(--pink-dim);
+            border-radius: 2px;
+            transition: all  0.2s, border-color 0.2s, color 0.2s;
+            word-break: break-all;
+        }
+
+        .container a:hover {
+            /* background: rgba(255,63,129,0.25); */
+            border-color: rgba(255,63,129,0.5);
+            color: #fff;
+        }
+        @media (max-width: 768px) {
+            form {
+                padding: 10px 12px;
+                top: 12%;
+                flex-wrap: wrap;
+                gap: 8px;
+            }
+ 
+            form input {
+                width: 100%;
+                max-width: 100%;
+                padding: 8px 12px;
+            }
+ 
+            form::before {
+                display: none;
+            }
+ 
+            form button {
+                margin-left: 0;
+                width: 100%;
+                text-align: center;
+            }
+ 
+            .container {
+                top: 34%;
+                max-width: 94%;
+            }
+ 
+            .container h1 {
+                font-size: 1.5rem;
+            }
+ 
+            .container .feature {
+                font-size: 0.9rem;
+            }
+ 
+            .container p {
+                font-size: 0.85rem;
+                max-width: 100%;
+            }
+ 
+            .container .img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+ 
+        /* Mobile: 480px and below */
+        @media (max-width: 480px) {
+            form {
+                top: 8%;
+                padding: 10px;
+                width: 92vw;
+            }
+ 
+            form input {
+                font-size: 0.85rem;
+                padding: 8px 10px;
+            }
+ 
+            form button {
+                font-size: 0.75rem;
+                padding: 9px 16px;
+            }
+ 
+            .container {
+                top: 36%;
+                max-width: 96%;
+                padding-bottom: 2rem;
+            }
+ 
+            .container h1 {
+                font-size: 1.2rem;
+            }
+ 
+            .container .feature {
+                font-size: 0.82rem;
+                padding: 6px;
+            }
+ 
+            .container p {
+                font-size: 0.8rem;
+            }
+ 
+            .container .imgs {
+                gap: 0.6rem;
+                padding: 0.8rem;
+                margin: 1rem 0;
+            }
+ 
+            .container .img {
+                width: 100px;
+                height: 100px;
+            }
+ 
+            .container .links a {
+                font-size: 0.7rem;
+                padding: 2px 6px;
+            }
+ 
+            .message {
+                font-size: 0.8rem;
+                top: -20%;
+            }
+        }
+    </style>
 </head>
 <body>
     <form action="/analyze" method="POST">
         <input type="text" name="url" placeholder="Enter website URL">
-        <button type="submit">Analyze</button>
+        <button class="btn" type="submit">Analyze</button>
+        <p class="message">Let's try Now</p>
     </form>
 
     <div class="container">
+
+        <% if (websiteName) { %>
+        <p class="feature">Website Name : </p>
         <h1><%= websiteName %></h1>
+        <% } else {%>
+        <h1><%= websiteName %></h1>
+        <% }%>
+        
+        <% if (metaDescription) { %>
+        <p class="feature">Meta Description :</p>
         <p><%= metaDescription %></p>
+        <% } else {%>
+        <p><%= metaDescription %></p>
+        <% } %>
 
+        <!-- links -->
 
+         <% if (titles) { %>
 
-        <% if (imgs) { %>
-        <% imgs.forEach(imgSrc => { %>
-             <img src="<%= imgSrc %>" alt="">
+            <p class="feature">All Website title h1 to h6 :</p>
+        <div class="titles"> 
+        <% if (Array.isArray(titles)  && titles.length!==0 ) { %>
+            <% titles.forEach(title => { %>
+                <p><%= title %></p>
             <% }) %>
+        <% } else { %>
+            <p><%= titles %></p>
+        <% } %>
+        </div>
+
+        <% } %>
+
+        <!-- images  -->
+
+         <% if (imgs) { %>
+          
+            <p class="feature">All Website Images</p>
+        <div class="imgs">
+        <% if (Array.isArray(imgs) && imgs.length!==0) { %>
+        <% imgs.forEach(imgSrc => { %>
+             <div class="img">
+                <img src="<%= imgSrc %>" alt="">
+             </div>
+            <% }) %>
+        <% } else { %>
+            <p><%= imgs %></p>
+        <% }  %>
+        </div>
+
+         <% } %>
+
+        <!-- link -->
+         <% if (links) { %>
+          
+            <p class="feature">All Website Links : </p>
+        <div class="links">
+        <% if (Array.isArray(links) && links.length!==0) { %>
+        <% links.forEach(link => { %>
+            <a href="<%= link %>" > <%= link %> </a>
+            <% }) %>
+        <% } else { %>
+            <p><%= links %></p>
+        <% }  %>
+        </div>
+
+        <% }  %>
+
+        <!-- css files or link  -->
+
+         <% if (links) { %>
+
+
+        <p class="feature">Css Fonts / files</p>
+
+        <div class="links">
+            <% if (Array.isArray(fonts) && fonts.length !== 0) { %>
+                <% fonts.forEach(font => { %>
+                    <a href="<%= font %>"><%= font %></a>
+                <% }) %>
+            <% } else { %>
+                <p><%= fonts %></p>
+            <% } %>
+        </div>
+
         <% } %>
 
     </div>
@@ -28,10 +437,27 @@
     <script>
     let getMessage = <%= isWrong %>; 
 
-    if(getMessage) { // Use the variable you just defined
+    if(getMessage) {
         alert("Do Not keep It Empty");
     }
     console.log(getMessage);
+
+    const btn = document.querySelector(".btn");
+    const message = document.querySelector(".message");
+    message.style.display="none";
+
+    btn.addEventListener("mouseover",()=>{
+        setTimeout(() => {
+        message.style.display="block";
+        }, 150);
+    });
+
+    btn.addEventListener("mouseout",()=>{
+        setTimeout(() => {
+        message.style.display="none";
+        }, 150);
+    });
+
     </script>
 
 </body>
