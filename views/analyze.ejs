@@ -28,9 +28,6 @@
             min-height: 100vh;
             overflow-x: hidden;
             background-color: var(--bg);
-            background-image:
-                radial-gradient(ellipse 60% 40% at 70% 10%, rgba(255,63,129,0.07) 0%, transparent 70%),
-                radial-gradient(ellipse 40% 30% at 10% 80%, rgba(255,63,129,0.04) 0%, transparent 60%);
             color: var(--text);
             font-family: 'Inter', sans-serif;
         }
@@ -230,6 +227,17 @@
             border-color: rgba(255,63,129,0.5);
             color: #fff;
         }
+
+        .container .aibot{
+            width: 100%;
+            min-height: 20rem;
+            overflow-x: scroll;
+            border: 1px solid white;
+        }
+        .hidden{
+            display: none;
+        }
+
         @media (max-width: 768px) {
             form {
                 padding: 10px 12px;
@@ -432,6 +440,13 @@
 
         <% } %>
 
+        <!-- ai bot -->
+
+        <!-- <button class="btnAiBot">Use ai</button>
+
+        <div class="aibot">
+        </div> -->
+
     </div>
 
     <script>
@@ -456,6 +471,17 @@
         setTimeout(() => {
         message.style.display="none";
         }, 150);
+    });
+
+    let status = false; 
+
+    const btnAiBot = document.querySelector(".btnAiBot");
+    const bot = document.querySelector(".aibot");
+    bot.classList.add("hidden");
+
+    btnAiBot.addEventListener("click", ()=>{
+        console.log(bot);
+        bot.classList.toggle("hidden");
     });
 
     </script>
