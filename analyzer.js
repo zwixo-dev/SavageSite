@@ -3,6 +3,9 @@ import dotenv from "dotenv";
 import axios from "axios";
 import * as cheerio from 'cheerio';
 import {GoogleGenAI} from '@google/genai';
+import fs from 'fs';
+
+
 
 const app = express();
 
@@ -62,7 +65,7 @@ app.post("/analyze", async (req,res) => {
         const getfonts = fontFamily($);
         console.log(getfonts);
 
-        main(getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts);
+        botScript(getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts);
 
         return res.render("analyze.ejs", { 
             isWrong: false,
@@ -173,13 +176,24 @@ const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
 
 const ai = new GoogleGenAI({apiKey: GEMINI_API_KEY});
 
-async function main(getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts) {
+async function main(data,getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts) {
   const response = await ai.models.generateContent({
     model: 'gemini-2.5-flash',
-    contents: `what you see here : ${getWebsiteName, metaDescription, getTitles, getImages, getLinks,getfonts}`,
+    contents: `${data}`,
   });
   console.log(response.text);
 }
 
+
+function botScript(){
+    fs.readFile('./botScript.txt', 'utf8', (err, data) => {
+        if(err){
+            console.log(err);
+        }else{
+            console.log(data);
+            main(data);
+        }
+    });
+}
 
 export default app;
